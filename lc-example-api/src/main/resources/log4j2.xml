@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="trace" monitorInterval="30">
+    <properties>
+        <!--日志目录-->
+        <property name="LOG_HOME">./logs</property>
+        <!--日志名称-->
+        <property name="LOG_NAME">example</property>
+        <!--日志格式-->
+        <property name="LOG_FORMAT">%d{yyyy-MM-dd HH:mm:ss,SSS}[%p][%t] %c[%L] %m %n</property>
+        <!--备份目录- 根据年月建立文件夹 -->
+        <property name="BACKUP_HOME">${LOG_HOME}/backup</property>
+        <!--备份频率-->
+        <property name="BACK_Hz">%d{yyyy-MM-dd}</property>
+    </properties>
+    <appenders>
+        <console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_FORMAT}"/>
+        </console>
+        <RollingFile name="infoLog" fileName="${LOG_HOME}/${LOG_NAME}/zh-mall-${LOG_NAME}-info.log"
+                     filePattern="${BACKUP_HOME}/${LOG_NAME}/info/zh-mall-${LOG_NAME}-info-${BACK_Hz}.log">
+            <PatternLayout pattern="${LOG_FORMAT}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${BACKUP_HOME}/${LOG_NAME}/info/" maxDepth="1">
+                    <IfFileName glob="*${LOG_NAME}*.log"/>
+                    <IfLastModified age="180d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMisMatch="NEUTRAL"/>
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMisMatch="DENY"/>
+            </Filters>
+        </RollingFile>
+        <RollingFile name="warnLog" fileName="${LOG_HOME}/${LOG_NAME}/zh-mall-${LOG_NAME}-warn.log"
+                     filePattern="${BACKUP_HOME}/${LOG_NAME}/warn/zh-mall-${LOG_NAME}-warn-${BACK_Hz}.log">
+            <PatternLayout pattern="${LOG_FORMAT}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${BACKUP_HOME}/${LOG_NAME}/warn/" maxDepth="1">
+                    <IfFileName glob="*{LOG_NAME}*.log"/>
+                    <IfLastModified age="360d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMisMatch="NEUTRAL"/>
+                <ThresholdFilter level="warn" onMatch="ACCEPT" onMisMatch="DENY"/>
+            </Filters>
+        </RollingFile>
+        <RollingFile name="errorLog" fileName="${LOG_HOME}/${LOG_NAME}/zh-mall-${LOG_NAME}-error.log"
+                     filePattern="${BACKUP_HOME}/${LOG_NAME}/error/zh-mall-${LOG_NAME}-error-${BACK_Hz}.log">
+            <PatternLayout pattern="${LOG_FORMAT}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+            </Policies>
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMisMatch="DENY"/>
+            </Filters>
+        </RollingFile>
+    </appenders>
+    <loggers>
+        <!--根日志配置-->
+        <root level="all">
+            <appender-ref ref="console"/>
+            <appender-ref ref="infoLog"/>
+            <appender-ref ref="warnLog"/>
+            <appender-ref ref="errorLog"/>
+        </root>
+        <!--第三方日志配置-->
+        <logger name="org.springframework.boot.web" level="info"/>
+        <logger name="org.springframework" level="INFO"></logger>
+        <logger name="org.mybatis" level="INFO"></logger>
+        <logger name="org.quartz" level="warn"/>
+        <logger name="org.apache" level="warn"/>
+        <logger name="org.apache.catalina" level="all"/>
+        <logger name="com.alibaba" level="warn"/>
+        <!--AsyncLogger :异步日志,LOG4J有三种日志模式,全异步日志,混合模式,同步日志,性能从高到底,线程越多效率越高,也可以避免日志卡死线程情况发生-->
+        <!--additivity="false" : additivity设置事件是否在root logger输出，为了避免重复输出，可以在Logger 标签下设置additivity为”false”-->
+        <AsyncLogger name="AsyncLogger" level="trace" includeLocation="true" additivity="false">
+            <appender-ref ref="RollingFileError"/>
+        </AsyncLogger>
+    </loggers>
+</configuration>

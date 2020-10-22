@@ -1,0 +1,21 @@
+server:
+  port: 8080
+spring:
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  thymeleaf:
+    prefix: classpath:/templates/
+logging:
+  config: classpath:log4j2.xml
+# 字典配置
+dict:
+  words: i,like,sam,sung,samsung,mobile,ice,cream,man go

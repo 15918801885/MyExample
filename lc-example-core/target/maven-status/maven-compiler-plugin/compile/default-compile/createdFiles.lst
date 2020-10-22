@@ -1,0 +1,4 @@
+com\example\core\dictionary\model\WordbreakerPhrase.class
+com\example\core\constant\CommonConstant.class
+com\example\core\dictionary\model\WordbreakerPhrase$WordbreakerPhraseBuilder.class
+com\example\core\dictionary\DictionaryHelper.class

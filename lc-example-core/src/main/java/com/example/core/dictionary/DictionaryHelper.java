@@ -61,6 +61,9 @@ public class DictionaryHelper {
         }
         for (String word : words) {
             String filterWord = word.replaceAll(" ", "");
+            if (filterWord.length() <= 1) {
+                continue;
+            }
             if (phrase.getInput().toLowerCase().startsWith(filterWord.toLowerCase())) {
                 list.addAll(wordbreaker(words, WordbreakerPhrase.builder()
                         .phrase(phrase.getPhrase())
@@ -88,22 +91,31 @@ public class DictionaryHelper {
             list.add(phrase);
             return list;
         }
+        List<WordbreakerPhrase> wordbreakerPhrases = new ArrayList<WordbreakerPhrase>();
+        int comparison = 0;
         for (String word : words) {
             String filterWord = word.replaceAll(" ", "");
-			if (filterWord.length() <= 1) {
-				continue;
+            if (filterWord.length() <= 1) {
+                continue;
             }
             int result = phrase.getInput().toLowerCase().indexOf(filterWord.toLowerCase());
-            if (result > 0) {
+            if (result > 0 && (comparison == 0 || result <= comparison)) {
                 String input = phrase.getInput();
                 String unidentified = input.substring(0, result);
                 String surplus = input.substring(unidentified.length() + filterWord.length());
-                list.addAll(wordbreaker(words, WordbreakerPhrase.builder()
+                if (result != comparison) {
+                    wordbreakerPhrases.clear();
+                }
+                wordbreakerPhrases.add(WordbreakerPhrase.builder()
                         .phrase(phrase.getPhrase())
                         .input(surplus)
                         .output(phrase.getOutput() + unidentified + " " + word + " ")
-                        .build()));
+                        .build());
+                comparison = result;
             }
+        }
+        for (WordbreakerPhrase wordbreakerPhrase : wordbreakerPhrases) {
+            list.addAll(wordbreaker(words, wordbreakerPhrase));
         }
         if (list.size() <= 0 && !StringHelper.isNullOrEmptyString(phrase.getOutput())) {
             list.add(WordbreakerPhrase.builder()

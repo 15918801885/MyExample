@@ -30,7 +30,6 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="editing.templates" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
@@ -60,28 +59,20 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1615450607337</updated>
+<<<<<<< HEAD
       <workItem from="1615450608563" duration="3065000" />
       <workItem from="1615462686137" duration="104000" />
       <workItem from="1615462806637" duration="55000" />
       <workItem from="1615462875946" duration="55000" />
       <workItem from="1615462944070" duration="21000" />
       <workItem from="1615463575882" duration="361000" />
+=======
+      <workItem from="1615450608563" duration="1597000" />
+>>>>>>> parent of bfcc2c3 (6)
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
